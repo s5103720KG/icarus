@@ -243,6 +243,13 @@ def run_scenario(settings, params, curr_exp, n_exp):
             return None
         topology = TOPOLOGY_FACTORY[topology_name](**topology_spec)
 
+        # This code removed the nodes from the topology if there is a removed_nodes property
+        # in the topology configuration
+        if "removed_nodes" in topology_spec:
+            removed_nodes = topology_spec.pop("removed_nodes")
+            for node in removed_nodes:
+                topology.remove_node(node)
+
         workload_spec = tree["workload"]
         workload_name = workload_spec.pop("name")
         if workload_name not in WORKLOAD:

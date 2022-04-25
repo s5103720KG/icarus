@@ -317,6 +317,22 @@ for alpha in ALPHA:
                 experiment["workload"]["alpha"] = alpha
                 experiment["strategy"]["name"] = strategy
                 experiment["topology"]["name"] = topology
+
+                # If you want to simulate a failure, add this configuration
+                # option that lists the names of the nodes you want to remove.
+                # The name of the nodes to remove (326, 340, 343 in this example)
+                # depends on the specific topology. You need to look at the topology
+                # what the node names are decide which to remove.
+                # To see the list of nodes in a topology, you can run Python and run the following commands.
+
+                # >>> import icarus.registry
+                # >>> topology = icarus.registry.TOPOLOGY_FACTORY["TISCALI"]()
+                # >>> print(topology.nodes)
+                # [16, 214, 341, 153, 203, 303, 319, 320, 326, 340, 343, 363, 390, 391, 159, 207, 217, 235, 236, 237, 239, 590, 176, 178, 177, 188, 219, 179, 196, 197, 199, 210, 238, 241, 242, 243, 190, 180, 184, 186, 209, 181, 183, 185, 208, 218, 224, 249, 250, 227, 187, 191, 189, 221, 192, 270, 193, 269, 194, 195, 201, 245, 200, 266, 198, 220, 212, 228, 231, 257, 259, 211, 213, 204, 205, 222, 252, 256, 253, 254, 355, 530, 531, 532, 535, 536, 223, 232, 234, 251, 589, 225, 226, 405, 408, 409, 412, 418, 429, 431, 432, 433, 439, 233, 230, 229, 413, 419, 423, 430, 434, 435, 436, 437, 438, 447, 449, 450, 265, 267, 244, 246, 261, 247, 248, 260, 262, 268, 567, 300, 302, 305, 316, 362, 301, 304, 327, 306, 374, 313, 312, 513, 548, 315, 321, 322, 345, 346, 509, 377, 522, 523, 330, 339, 332, 333, 334, 527, 528, 335, 525, 336, 337, 338, 351, 352, 353, 354, 356, 357, 358, 378, 389, 348, 342, 533, 537, 347, 393, 371, 506, 507, 508, 540, 516, 361, 368, 364, 367, 541, 542, 372, 373, 551, 383, 392, 547, 379, 380, 381, 382, 553, 387, 388, 394, 440, 406, 441, 407, 414, 442, 443, 444, 410, 415, 446, 411, 452, 453, 416, 417, 424, 458, 459, 460, 420, 422, 425, 421, 427, 426, 451, 448, 445, 455, 456, 457, 454, 534, 543]
+
+                if topology == "TISCALI":
+                    experiment["topology"]["removed_nodes"] = [326, 340, 343]
+
                 experiment["cache_placement"]["network_cache"] = network_cache
                 experiment[
                     "desc"

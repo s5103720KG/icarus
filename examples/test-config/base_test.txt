@@ -1,0 +1,205 @@
+EXPERIMENT 1/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: HR_ASYMM
+  RESULTS:
+    LATENCY
+     * MEAN: 73.85
+    CACHE_HIT_RATIO
+     * MEAN: 0.23
+     * PER_NODE_CACHE_HIT_RATIO: Tree({0: 0.0075, 22: 0.015, 2: 0.08, 4: 0.0325, 5: 0.0225, 12: 0.01, 3: 0.025, 36: 0.0075, 29: 0.005, 23: 0.0075, 9: 0.01, 8: 0.0075})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1031: 0.025, 1017: 0.0725, 1039: 0.0575, 1032: 0.0875, 1001: 0.05, 1028: 0.07, 1033: 0.065, 1038: 0.095, 1006: 0.0575, 1016: 0.0425, 1024: 0.0475, 1035: 0.0375, 1014: 0.0625})
+
+EXPERIMENT 2/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: HR_SYMM
+  RESULTS:
+    LATENCY
+     * MEAN: 66.43
+    CACHE_HIT_RATIO
+     * MEAN: 0.3675
+     * PER_NODE_CACHE_HIT_RATIO: Tree({3: 0.05, 4: 0.03, 2: 0.1, 25: 0.0125, 29: 0.015, 5: 0.02, 12: 0.0325, 7: 0.0125, 9: 0.025, 15: 0.0125, 22: 0.0075, 0: 0.0075, 8: 0.0125, 13: 0.01, 23: 0.0075, 27: 0.005, 36: 0.005, 34: 0.0025})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1033: 0.07, 1028: 0.0525, 1017: 0.055, 1014: 0.0425, 1024: 0.045, 1038: 0.05, 1035: 0.0525, 1032: 0.05, 1039: 0.055, 1001: 0.045, 1031: 0.025, 1006: 0.045, 1016: 0.045})
+
+EXPERIMENT 3/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: NO_CACHE
+  RESULTS:
+    LATENCY
+     * MEAN: 87.52
+    CACHE_HIT_RATIO
+     * MEAN: 0.0
+     * PER_NODE_CACHE_HIT_RATIO: Tree({})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1001: 0.115, 1032: 0.185, 1031: 0.09, 1039: 0.0525, 1038: 0.0575, 1035: 0.0675, 1024: 0.0375, 1016: 0.0675, 1014: 0.0575, 1006: 0.075, 1033: 0.0825, 1028: 0.065, 1017: 0.0475})
+
+EXPERIMENT 4/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: LCE
+  RESULTS:
+    LATENCY
+     * MEAN: 67.82
+    CACHE_HIT_RATIO
+     * MEAN: 0.245
+     * PER_NODE_CACHE_HIT_RATIO: Tree({4: 0.025, 9: 0.0225, 22: 0.0325, 36: 0.0075, 3: 0.05, 2: 0.015, 29: 0.0125, 13: 0.0275, 12: 0.01, 27: 0.0125, 0: 0.015, 30: 0.0025, 15: 0.0025, 25: 0.01})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1039: 0.05, 1024: 0.065, 1001: 0.04, 1014: 0.0825, 1006: 0.0725, 1033: 0.0525, 1016: 0.0475, 1035: 0.0675, 1032: 0.075, 1028: 0.0675, 1038: 0.06, 1031: 0.0475, 1017: 0.0275})
+
+EXPERIMENT 5/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: HR_MULTICAST
+  RESULTS:
+    LATENCY
+     * MEAN: 67.605
+    CACHE_HIT_RATIO
+     * MEAN: 0.3125
+     * PER_NODE_CACHE_HIT_RATIO: Tree({3: 0.045, 7: 0.0075, 36: 0.0025, 5: 0.0275, 13: 0.02, 25: 0.005, 30: 0.0125, 2: 0.0775, 4: 0.025, 29: 0.01, 12: 0.0075, 9: 0.025, 8: 0.015, 23: 0.005, 0: 0.01, 15: 0.0025, 27: 0.0075, 22: 0.005, 34: 0.0025})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1038: 0.0525, 1032: 0.03, 1017: 0.0725, 1039: 0.06, 1006: 0.05, 1016: 0.0425, 1001: 0.05, 1028: 0.0475, 1033: 0.06, 1024: 0.06, 1035: 0.0675, 1014: 0.055, 1031: 0.04})
+
+EXPERIMENT 6/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: HR_HYBRID_AM
+  RESULTS:
+    LATENCY
+     * MEAN: 70.55
+    CACHE_HIT_RATIO
+     * MEAN: 0.275
+     * PER_NODE_CACHE_HIT_RATIO: Tree({3: 0.0425, 2: 0.0975, 15: 0.015, 5: 0.0175, 4: 0.0425, 22: 0.005, 13: 0.0125, 12: 0.015, 36: 0.005, 25: 0.0075, 9: 0.01, 30: 0.0025, 0: 0.0025})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1006: 0.075, 1001: 0.06, 1031: 0.05, 1035: 0.06, 1033: 0.0725, 1032: 0.065, 1039: 0.0375, 1024: 0.0575, 1014: 0.0375, 1017: 0.0525, 1028: 0.04, 1016: 0.07, 1038: 0.0475})
+
+EXPERIMENT 7/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: CL4M
+  RESULTS:
+    LATENCY
+     * MEAN: 68.23
+    CACHE_HIT_RATIO
+     * MEAN: 0.2425
+     * PER_NODE_CACHE_HIT_RATIO: Tree({4: 0.0625, 22: 0.035, 23: 0.0025, 12: 0.0175, 3: 0.05, 9: 0.0175, 2: 0.015, 36: 0.0125, 15: 0.0075, 13: 0.015, 29: 0.005, 27: 0.0025})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1016: 0.06, 1033: 0.0775, 1014: 0.0425, 1017: 0.065, 1001: 0.045, 1031: 0.0675, 1039: 0.0675, 1038: 0.07, 1024: 0.04, 1028: 0.0375, 1035: 0.0675, 1032: 0.065, 1006: 0.0525})
+
+EXPERIMENT 8/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: HR_HYBRID_SM
+  RESULTS:
+    LATENCY
+     * MEAN: 48.86
+    CACHE_HIT_RATIO
+     * MEAN: 0.3675
+     * PER_NODE_CACHE_HIT_RATIO: Tree({9: 0.03, 8: 0.025, 4: 0.0275, 5: 0.0275, 2: 0.08, 23: 0.0075, 36: 0.01, 13: 0.0125, 34: 0.01, 3: 0.06, 7: 0.0275, 25: 0.0075, 30: 0.005, 15: 0.015, 29: 0.0075, 12: 0.0075, 27: 0.0025, 22: 0.005})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1001: 0.0525, 1031: 0.065, 1024: 0.0575, 1016: 0.0575, 1033: 0.055, 1038: 0.0525, 1006: 0.035, 1028: 0.0325, 1014: 0.05, 1039: 0.04, 1032: 0.055, 1035: 0.0475, 1017: 0.0325})
+
+EXPERIMENT 9/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: PROB_CACHE
+  RESULTS:
+    LATENCY
+     * MEAN: 76.34
+    CACHE_HIT_RATIO
+     * MEAN: 0.1275
+     * PER_NODE_CACHE_HIT_RATIO: Tree({22: 0.025, 27: 0.01, 3: 0.0325, 36: 0.0275, 9: 0.015, 5: 0.005, 13: 0.0025, 15: 0.005, 4: 0.0025, 12: 0.0025})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1035: 0.0775, 1039: 0.1, 1014: 0.13, 1038: 0.035, 1017: 0.0425, 1032: 0.07, 1016: 0.0725, 1033: 0.055, 1024: 0.0775, 1031: 0.0725, 1006: 0.06, 1001: 0.0425, 1028: 0.0375})
+
+EXPERIMENT 10/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: LCD
+  RESULTS:
+    LATENCY
+     * MEAN: 61.98
+    CACHE_HIT_RATIO
+     * MEAN: 0.3225
+     * PER_NODE_CACHE_HIT_RATIO: Tree({25: 0.01, 4: 0.075, 34: 0.0025, 9: 0.0375, 12: 0.02, 2: 0.0225, 30: 0.005, 29: 0.0225, 3: 0.0325, 5: 0.0075, 0: 0.02, 8: 0.005, 22: 0.01, 15: 0.01, 27: 0.02, 36: 0.015, 23: 0.0075})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1031: 0.0575, 1038: 0.0575, 1032: 0.065, 1014: 0.0525, 1033: 0.035, 1024: 0.05, 1035: 0.04, 1028: 0.0625, 1039: 0.0475, 1006: 0.045, 1016: 0.0575, 1017: 0.05, 1001: 0.0575})
+
+EXPERIMENT 11/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: RAND_BERNOULLI
+  RESULTS:
+    LATENCY
+     * MEAN: 71.4
+    CACHE_HIT_RATIO
+     * MEAN: 0.21
+     * PER_NODE_CACHE_HIT_RATIO: Tree({0: 0.0125, 29: 0.0175, 30: 0.0025, 22: 0.01, 3: 0.02, 25: 0.0075, 4: 0.0725, 13: 0.0175, 12: 0.0125, 27: 0.01, 8: 0.005, 23: 0.005, 9: 0.01, 2: 0.0025, 36: 0.005})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1032: 0.0775, 1001: 0.0875, 1038: 0.0675, 1006: 0.0625, 1014: 0.05, 1035: 0.0525, 1033: 0.07, 1017: 0.055, 1039: 0.05, 1024: 0.06, 1031: 0.0375, 1028: 0.0675, 1016: 0.0525})
+
+EXPERIMENT 12/12:
+  CONFIGURATION:
+   * topology -> name: GEANT
+   * workload -> name: STATIONARY, n_contents: 100000, n_warmup: 100, n_measured: 400, rate: 1, alpha: 1.0
+   * cache_placement -> name: UNIFORM, network_cache: 0.01
+   * content_placement -> name: UNIFORM
+   * cache_policy -> name: LRU
+   * desc -> testing
+   * strategy -> name: RAND_CHOICE
+  RESULTS:
+    LATENCY
+     * MEAN: 67.06
+    CACHE_HIT_RATIO
+     * MEAN: 0.25
+     * PER_NODE_CACHE_HIT_RATIO: Tree({4: 0.0525, 22: 0.025, 5: 0.01, 3: 0.0525, 23: 0.01, 9: 0.015, 12: 0.0175, 30: 0.0075, 29: 0.0075, 13: 0.0125, 15: 0.0025, 2: 0.005, 27: 0.0175, 36: 0.01, 8: 0.005})
+     * PER_NODE_SERVER_HIT_RATIO: Tree({1006: 0.0625, 1035: 0.06, 1039: 0.0625, 1014: 0.0375, 1032: 0.05, 1038: 0.04, 1031: 0.095, 1016: 0.09, 1033: 0.0475, 1028: 0.07, 1017: 0.055, 1001: 0.055, 1024: 0.025})
+
+
