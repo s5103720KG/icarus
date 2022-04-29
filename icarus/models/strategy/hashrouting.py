@@ -123,13 +123,19 @@ class Hashrouting(BaseHashrouting):
         # handle (and log if required) actual request
         self.controller.start_session(time, receiver, content, log)
         # Forward request to authoritative cache
-        self.controller.forward_request_path(receiver, cache)
+        try:
+            self.controller.forward_request_path(receiver, cache)
+        except Exception:
+            return
         if self.controller.get_content(cache):
             # We have a cache hit here
             self.controller.forward_content_path(cache, receiver)
         else:
             # Cache miss: go all the way to source
-            self.controller.forward_request_path(cache, source)
+            try:
+                self.controller.forward_request_path(cache, source)
+            except Exception:
+                return
             if not self.controller.get_content(source):
                 raise RuntimeError("The content is not found the expected source")
             if self.routing == "SYMM":

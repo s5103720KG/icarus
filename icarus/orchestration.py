@@ -243,13 +243,6 @@ def run_scenario(settings, params, curr_exp, n_exp):
             return None
         topology = TOPOLOGY_FACTORY[topology_name](**topology_spec)
 
-        # This code removed the nodes from the topology if there is a removed_nodes property
-        # in the topology configuration
-        if "removed_nodes" in topology_spec:
-            removed_nodes = topology_spec.pop("removed_nodes")
-            for node in removed_nodes:
-                topology.remove_node(node)
-
         workload_spec = tree["workload"]
         workload_name = workload_spec.pop("name")
         if workload_name not in WORKLOAD:
@@ -271,6 +264,19 @@ def run_scenario(settings, params, curr_exp, n_exp):
             # the whole network
             cachepl_spec["cache_budget"] = workload.n_contents * network_cache
             CACHE_PLACEMENT[cachepl_name](topology, **cachepl_spec)
+
+
+        # This code removed cache nodes from the topology if there is a removed_nodes property
+        # in the topology configuration
+        if "removed_nodes" in topology_spec:
+            removed_nodes = topology_spec.pop("removed_nodes")
+            cache_nodes = set(topology.cache_nodes())
+            for node in removed_nodes:
+                if node not in cache_nodes:
+                    logger.error("Cannot remove node %s since it is not a cache." % node)
+                    return None
+                topology.remove_node(node)
+                topology.graph['icr_candidates'].remove(node)
 
         # Assign contents to sources
         # If there are many contents, after doing this, performing operations
@@ -335,14 +341,15 @@ def run_scenario(settings, params, curr_exp, n_exp):
     except KeyboardInterrupt:
         logger.error("Received keyboard interrupt. Terminating")
         sys.exit(-signal.SIGINT)
-    except Exception as e:
-        err_type = str(type(e)).split("'")[1].split(".")[1]
-        err_message = e.message
-        logger.error(
-            "Experiment %d/%d | Failed | %s: %s\n%s",
-            curr_exp,
-            n_exp,
-            err_type,
-            err_message,
-            traceback.format_exc(),
-        )
+    # except Exception as e:
+    #     raise e
+        # err_type = str(type(e)).split("'")[1].split(".")[1]
+        # err_message = e.message
+        # logger.error(
+        #     "Experiment %d/%d | Failed | %s: %s\n%s",
+        #     curr_exp,
+        #     n_exp,
+        #     err_type,
+        #     err_message,
+        #     traceback.format_exc(),
+        # )

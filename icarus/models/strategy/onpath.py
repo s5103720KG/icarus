@@ -132,7 +132,10 @@ class LeaveCopyEverywhere(Strategy):
     def process_event(self, time, receiver, content, log):
         # get all required data
         source = self.view.content_source(content)
-        path = self.view.shortest_path(receiver, source)
+        try:
+            path = self.view.shortest_path(receiver, source)
+        except Exception:
+            return
         # Route requests to original source and queries caches on the path
         self.controller.start_session(time, receiver, content, log)
         for u, v in path_links(path):
@@ -177,7 +180,10 @@ class LeaveCopyDown(Strategy):
     def process_event(self, time, receiver, content, log):
         # get all required data
         source = self.view.content_source(content)
-        path = self.view.shortest_path(receiver, source)
+        try:
+            path = self.view.shortest_path(receiver, source)
+        except Exception:
+            return
         # Route requests to original source and queries caches on the path
         self.controller.start_session(time, receiver, content, log)
         for u, v in path_links(path):
@@ -237,7 +243,10 @@ class ProbCache(Strategy):
     def process_event(self, time, receiver, content, log):
         # get all required data
         source = self.view.content_source(content)
-        path = self.view.shortest_path(receiver, source)
+        try:
+            path = self.view.shortest_path(receiver, source)
+        except Exception:
+            return
         # Route requests to original source and queries caches on the path
         self.controller.start_session(time, receiver, content, log)
         for hop in range(1, len(path)):
@@ -307,7 +316,10 @@ class CacheLessForMore(Strategy):
     def process_event(self, time, receiver, content, log):
         # get all required data
         source = self.view.content_source(content)
-        path = self.view.shortest_path(receiver, source)
+        try:
+            path = self.view.shortest_path(receiver, source)
+        except Exception:
+            return
         # Route requests to original source and queries caches on the path
         self.controller.start_session(time, receiver, content, log)
         for u, v in path_links(path):
@@ -357,7 +369,10 @@ class RandomBernoulli(Strategy):
     def process_event(self, time, receiver, content, log):
         # get all required data
         source = self.view.content_source(content)
-        path = self.view.shortest_path(receiver, source)
+        try:
+            path = self.view.shortest_path(receiver, source)
+        except Exception:
+            return
         # Route requests to original source and queries caches on the path
         self.controller.start_session(time, receiver, content, log)
         for u, v in path_links(path):
@@ -396,7 +411,10 @@ class RandomChoice(Strategy):
     def process_event(self, time, receiver, content, log):
         # get all required data
         source = self.view.content_source(content)
-        path = self.view.shortest_path(receiver, source)
+        try:
+            path = self.view.shortest_path(receiver, source)
+        except Exception:
+            return
         # Route requests to original source and queries caches on the path
         self.controller.start_session(time, receiver, content, log)
         for u, v in path_links(path):

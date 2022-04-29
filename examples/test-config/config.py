@@ -35,7 +35,7 @@ N_REPLICATIONS = 1
 
 # List of metrics to be measured in the experiments
 # The implementation of data collectors are located in ./icarus/execution/collectors.py
-DATA_COLLECTORS = ["LATENCY", "CACHE_HIT_RATIO"]
+DATA_COLLECTORS = ["LATENCY", "CACHE_HIT_RATIO", "SUCCESS"]
 
 # Number of content objects
 N_CONTENTS = 10 ** 5
@@ -61,8 +61,6 @@ STRATEGIES = [
     "HR_SYMM",  # Symmetric hash-routing
     "HR_ASYMM",  # Asymmetric hash-routing
     "HR_MULTICAST",  # Multicast hash-routing
-    "HR_HYBRID_AM",  # Hybrid Asymm-Multicast hash-routing
-    "HR_HYBRID_SM",  # Hybrid Symm-Multicast hash-routing
     "CL4M",  # Cache less for more
     "PROB_CACHE",  # ProbCache
     "LCD",  # Leave Copy Down
@@ -113,7 +111,7 @@ default["desc"] = "testing"
 
 #print(TOPOLOGIES.nodes)
 
-default["topology"]["removed_nodes"] = [0, 1, 2]
+default["topology"]["removed_nodes"] = [0, 2, 3]
 
 for strategy in STRATEGIES:
     experiment = copy.deepcopy(default)

@@ -23,6 +23,7 @@ __all__ = [
     "LinkLoadCollector",
     "LatencyCollector",
     "PathStretchCollector",
+    "SuccessCollector",
     "DummyCollector",
 ]
 
@@ -365,6 +366,29 @@ class LatencyCollector(DataCollector):
             results["CDF"] = cdf(self.latency_data)
         return results
 
+
+@register_data_collector("SUCCESS")
+class SuccessCollector(DataCollector):
+
+    def __init__(self, view, cdf=False):
+        self.sessions = 0
+        self.successes = 0
+
+    @inheritdoc(DataCollector)
+    def start_session(self, timestamp, receiver, content):
+        self.sessions += 1
+
+    @inheritdoc(DataCollector)
+    def cache_hit(self, node):
+        self.successes += 1
+
+    @inheritdoc(DataCollector)
+    def server_hit(self, node):
+        self.successes += 1
+
+    @inheritdoc(DataCollector)
+    def results(self):
+        return Tree(**{"SUCCESS_RATE": self.successes / self.sessions})
 
 @register_data_collector("CACHE_HIT_RATIO")
 class CacheHitRatioCollector(DataCollector):
