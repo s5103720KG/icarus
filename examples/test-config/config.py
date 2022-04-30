@@ -3,8 +3,23 @@
 from multiprocessing import cpu_count
 from collections import deque
 import copy
+import random
 from icarus.util import Tree
 import icarus.registry
+
+
+def get_nodes_to_remove(topology_config, n_removed_nodes):
+    """Get list of nodes ro remove from topology"""
+    topology_name = topology_config["name"]
+    topology = icarus.registry.TOPOLOGY_FACTORY[topology_name]()
+    cache_nodes = topology.graph["icr_candidates"]
+
+    # Remove random nodes. You can replace this line with more sophisticated
+    # logic, like removing nodes based on their centrality etc...
+    nodes_to_remove = random.sample(sorted(cache_nodes), n_removed_nodes)
+
+    return nodes_to_remove
+
 
 # GENERAL SETTINGS
 
@@ -109,14 +124,9 @@ default["cache_policy"]["name"] = CACHE_POLICY
 
 default["desc"] = "testing"
 
-#print(TOPOLOGIES.nodes)
-
-default["topology"]["removed_nodes"] = [0, 2, 3]
+default["topology"]["removed_nodes"] = get_nodes_to_remove(default["topology"], 3)
 
 for strategy in STRATEGIES:
     experiment = copy.deepcopy(default)
     experiment["strategy"]["name"] = strategy
     EXPERIMENT_QUEUE.append(experiment)
-
-
-# icarus results print results.pickle > test.txt
