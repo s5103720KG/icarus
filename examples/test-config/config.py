@@ -21,6 +21,19 @@ def get_nodes_to_remove(topology_config, n_removed_nodes):
     return nodes_to_remove
 
 
+def get_links_to_remove(topology_config, n_removed_links):
+    """Get list of nodes ro remove from topology"""
+    topology_name = topology_config["name"]
+    topology = icarus.registry.TOPOLOGY_FACTORY[topology_name]()
+    links = topology.edges()
+
+    # Remove random links. You can replace this line with more sophisticated
+    # logic, like removing nodes based on their centrality etc...
+    links_to_remove = random.sample(sorted(links), n_removed_links)
+
+    return links_to_remove
+
+
 # GENERAL SETTINGS
 
 # Level of logging output
@@ -125,6 +138,8 @@ default["cache_policy"]["name"] = CACHE_POLICY
 default["desc"] = "testing"
 
 default["topology"]["removed_nodes"] = get_nodes_to_remove(default["topology"], 3)
+
+default["topology"]["removed_links"] = get_links_to_remove(default["topology"], 3)
 
 for strategy in STRATEGIES:
     experiment = copy.deepcopy(default)
