@@ -16,6 +16,7 @@ from os import path
 
 import networkx as nx
 import fnss
+from numpy import genfromtxt
 
 from icarus.registry import register_topology_factory
 
@@ -116,6 +117,32 @@ def largest_connected_component_subgraph(topology):
     """
     c = max(nx.connected_components(topology), key=len)
     return topology.subgraph(c)
+"""
+@register_topology_factory("TEST")
+def topology_test(matix, delay=1, **kwargs):
+    # matirix is a txt file
+    numpy_graph = genfromtxt(matix, delimiter='')
+    graph = nx.Graph(numpy_graph)
+    # dont know what fnss class thing to use :/
+    topology = fnss.??(graph)
+    routers = range(graph.number_of_nodes())
+    receivers = range(graph.number_of_nodes())
+    sources = range(graph.number_of_nodes())
+    topology.graph["icr_candidates"] = set(routers)
+    for v in sources:
+        fnss.add_stack(topology, v, "source")
+    for v in receivers:
+        fnss.add_stack(topology, v, "receiver")
+    for v in routers:
+        fnss.add_stack(topology, v, "router")
+    # set weights and delays on all links
+    fnss.set_weights_constant(topology, 1.0)
+    fnss.set_delays_constant(topology, delay, "ms")
+    # label links as internal or external
+    for u, v in topology.edges():
+        topology.adj[u][v]["type"] = "internal"
+    return IcnTopology(topology)"""
+
 
 
 @register_topology_factory("TREE")

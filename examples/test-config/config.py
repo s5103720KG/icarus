@@ -6,6 +6,7 @@ import copy
 import random
 from icarus.util import Tree
 import icarus.registry
+import networkx as nx
 
 
 def get_nodes_to_remove(topology_config, n_removed_nodes):
@@ -14,9 +15,21 @@ def get_nodes_to_remove(topology_config, n_removed_nodes):
     topology = icarus.registry.TOPOLOGY_FACTORY[topology_name]()
     cache_nodes = topology.graph["icr_candidates"]
 
+    between=nx.betweenness_centrality(topology)
+    print("betweenness centrality")
+    print(between)
+    maxs = max(between.values())
+    test = [k for k, v in between.items() if v == maxs]
+    print(maxs)
+    print(test)
+    print(type(between))
+
     # Remove random nodes. You can replace this line with more sophisticated
     # logic, like removing nodes based on their centrality etc...
     nodes_to_remove = random.sample(sorted(cache_nodes), n_removed_nodes)
+
+    print("nodes removed")
+    print(nodes_to_remove)
 
     return nodes_to_remove
 
@@ -46,7 +59,7 @@ RESULTS_FORMAT = "PICKLE"
 
 # Number of times each experiment is replicated
 # This is necessary for extracting confidence interval of selected metrics
-N_REPLICATIONS = 1
+N_REPLICATIONS = 0
 
 # List of metrics to be measured in the experiments
 # The implementation of data collectors are located in ./icarus/execution/collectors.py
@@ -57,16 +70,16 @@ N_CONTENTS = 10 ** 5
 
 # Number of content requests generated to prepopulate the caches
 # These requests are not logged
-N_WARMUP_REQUESTS = 10 ** 2
+N_WARMUP_REQUESTS = 20*60*100
 
 # Number of content requests generated after the warmup and logged
 # to generate results.
-N_MEASURED_REQUESTS = 4 * 10 ** 2
+N_MEASURED_REQUESTS = 10 ** 5
 
-ALPHA = 1.0
+ALPHA = 0.8
 
 # Number of requests per second (over the whole network)
-NETWORK_REQUEST_RATE = 1
+NETWORK_REQUEST_RATE = 100
 
 # List of caching and routing strategies
 # The code is located in ./icarus/models/strategy.py
@@ -124,9 +137,11 @@ default["cache_policy"]["name"] = CACHE_POLICY
 
 default["desc"] = "testing"
 
-default["topology"]["removed_nodes"] = get_nodes_to_remove(default["topology"], 3)
+default["topology"]["removed_nodes"] = get_nodes_to_remove(default["topology"], 1)
 
 for strategy in STRATEGIES:
     experiment = copy.deepcopy(default)
     experiment["strategy"]["name"] = strategy
     EXPERIMENT_QUEUE.append(experiment)
+
+# icarus results print results.pickle > test.txt
