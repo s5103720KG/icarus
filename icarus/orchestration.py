@@ -266,17 +266,31 @@ def run_scenario(settings, params, curr_exp, n_exp):
             CACHE_PLACEMENT[cachepl_name](topology, **cachepl_spec)
 
 
-        # This code removed cache nodes from the topology if there is a removed_nodes property
+        # This code removed cache nodes and links from the topology if there is a removed_nodes property
         # in the topology configuration
+        cache_nodes = set(topology.cache_nodes())
+        links = set(topology.edges())
+
         if "removed_nodes" in topology_spec:
             removed_nodes = topology_spec.pop("removed_nodes")
-            cache_nodes = set(topology.cache_nodes())
             for node in removed_nodes:
                 if node not in cache_nodes:
                     logger.error("Cannot remove node %s since it is not a cache." % node)
                     return None
                 topology.remove_node(node)
                 topology.graph['icr_candidates'].remove(node)
+
+        if "removed_links" in topology_spec:
+            removed_links = topology_spec.pop("removed_links")
+            for link in removed_links:
+                if link not in links:
+                    logger.error("Cannot remove link %s since it is not in the topology." % (link,))
+                    return None
+                try:
+                    topology.remove_edge(*link)
+                except Exception:
+                    # This can happen if a removed node caused the link to be eliminated already
+                    pass
 
         # Assign contents to sources
         # If there are many contents, after doing this, performing operations
