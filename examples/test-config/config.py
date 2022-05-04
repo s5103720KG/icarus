@@ -9,30 +9,39 @@ import icarus.registry
 import networkx as nx
 
 
-def get_nodes_to_remove(topology_config, n_removed_nodes):
+def random_get_nodes_to_remove(topology_config, n_removed_nodes):
     """Get list of nodes ro remove from topology"""
     topology_name = topology_config["name"]
     topology = icarus.registry.TOPOLOGY_FACTORY[topology_name]()
     cache_nodes = topology.graph["icr_candidates"]
 
-    between=nx.betweenness_centrality(topology)
-    print("betweenness centrality")
-    print(between)
-    maxs = max(between.values())
-    test = [k for k, v in between.items() if v == maxs]
-    print(maxs)
-    print(test)
-    print(type(between))
-
     # Remove random nodes. You can replace this line with more sophisticated
     # logic, like removing nodes based on their centrality etc...
     nodes_to_remove = random.sample(sorted(cache_nodes), n_removed_nodes)
 
-    print("nodes removed")
-    print(nodes_to_remove)
-
     return nodes_to_remove
 
+def centraility_get_nodes_to_remove(topology_config, n_removed_nodes):
+    topology_name = topology_config["name"]
+    topology = icarus.registry.TOPOLOGY_FACTORY[topology_name]()
+    cache_nodes = topology.graph["icr_candidates"]
+
+    # finds the betweenness centrality of each node and adds the availble nodes
+    # to a new dictionary
+    centrality = nx.betweenness_centrality(topology)
+    available_nodes = {key: value for key, value in centrality.items() if key in cache_nodes}
+    nodes = []
+
+    # Based on the amount of nodes you want removed, it removes the highests scoring each time
+    for x in range(n_removed_nodes):
+        max_centrality = max(available_nodes.values())
+        tmp = int(str([k for k, v in available_nodes.items() if v == max_centrality]).replace('[','').replace(']',''))
+        nodes.append(tmp)
+        available_nodes.pop(nodes[x])
+
+    print(nodes)
+    nodes_to_remove = nodes
+    return nodes_to_remove
 
 def get_links_to_remove(topology_config, n_removed_links):
     """Get list of nodes ro remove from topology"""
@@ -119,9 +128,12 @@ default = Tree()
 #default["topology"]["name"] = "ROCKET_FUEL"
 #default["topology"]["asn"] = 1221
 
-TOPOLOGIES = "GEANT"
+TOPOLOGIES = "NET_A"
 
 default["topology"]["name"] = TOPOLOGIES
+#default["topology"]["matrix"] = "hello"
+#default["topology"]["m"] = 10
+
 
 # Set workload
 default["workload"] = {
@@ -150,7 +162,7 @@ default["cache_policy"]["name"] = CACHE_POLICY
 
 default["desc"] = "testing"
 
-default["topology"]["removed_nodes"] = get_nodes_to_remove(default["topology"], 1)
+default["topology"]["removed_nodes"] = centraility_get_nodes_to_remove(default["topology"], 3)
 
 default["topology"]["removed_links"] = get_links_to_remove(default["topology"], 3)
 

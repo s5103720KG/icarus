@@ -117,17 +117,24 @@ def largest_connected_component_subgraph(topology):
     """
     c = max(nx.connected_components(topology), key=len)
     return topology.subgraph(c)
-"""
-@register_topology_factory("TEST")
-def topology_test(matix, delay=1, **kwargs):
+
+@register_topology_factory("NET_A")
+def topology_NET_A(matrix="hello", m=10, delay=1, **kwargs):
     # matirix is a txt file
-    numpy_graph = genfromtxt(matix, delimiter='')
+    # using default/constant values for matrix and m because it wasnt working
+    # when i tried to pass them through the config file
+    print(matrix)
+    numpy_graph = genfromtxt('/home/kade/PycharmProjects/icarus/icarus/scenarios/NETWORK_A.txt', delimiter='')
     graph = nx.Graph(numpy_graph)
-    # dont know what fnss class thing to use :/
-    topology = fnss.??(graph)
-    routers = range(graph.number_of_nodes())
-    receivers = range(graph.number_of_nodes())
-    sources = range(graph.number_of_nodes())
+    topology = fnss.Topology(graph)
+    n = topology.number_of_nodes()
+
+    #using mesh example for setting the routers, recivers and sources
+    if m > n:
+        raise ValueError("m cannot be greater than n")
+    routers = range(n)
+    receivers = range(n, 2 * n)
+    sources = range(2 * n, 2 * n + m)
     topology.graph["icr_candidates"] = set(routers)
     for v in sources:
         fnss.add_stack(topology, v, "source")
@@ -141,7 +148,7 @@ def topology_test(matix, delay=1, **kwargs):
     # label links as internal or external
     for u, v in topology.edges():
         topology.adj[u][v]["type"] = "internal"
-    return IcnTopology(topology)"""
+    return IcnTopology(topology)
 
 
 
