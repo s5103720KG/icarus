@@ -25,6 +25,8 @@ def centrality_get_nodes_to_remove(topology_config, n_removed_nodes):
     topology_name = topology_config["name"]
     topology = icarus.registry.TOPOLOGY_FACTORY[topology_name](**topology_config)
     cache_nodes = topology.graph["icr_candidates"]
+    print("cache nodes")
+    print(cache_nodes)
 
     # finds the betweenness centrality of each node and adds the availble nodes
     # to a new dictionary
@@ -127,8 +129,10 @@ default = Tree()
 #default["topology"]["name"] = "ROCKET_FUEL"
 #default["topology"]["asn"] = 1221
 
-TOPOLOGIES = "TEST2"
+TOPOLOGIES = "SCALE_FREE"
 #TOPOLOGIES = "TISCALI_2"
+#TOPOLOGIES = "RANDOM"
+#TOPOLOGIES = "NET_A"
 
 default["topology"]["name"] = TOPOLOGIES
 #default["topology"]["matrix"] = "hello"
