@@ -21,7 +21,7 @@ def random_get_nodes_to_remove(topology_config, n_removed_nodes):
 
     return nodes_to_remove
 
-def centraility_get_nodes_to_remove(topology_config, n_removed_nodes):
+def centraility_get_nodes_to_remove(topology_config, n_removed_nodes ):
     topology_name = topology_config["name"]
     topology = icarus.registry.TOPOLOGY_FACTORY[topology_name]()
     cache_nodes = topology.graph["icr_candidates"]
@@ -128,7 +128,8 @@ default = Tree()
 #default["topology"]["name"] = "ROCKET_FUEL"
 #default["topology"]["asn"] = 1221
 
-TOPOLOGIES = "NET_A"
+TOPOLOGIES = "TEST2"
+#TOPOLOGIES = "TISCALI_2"
 
 default["topology"]["name"] = TOPOLOGIES
 #default["topology"]["matrix"] = "hello"

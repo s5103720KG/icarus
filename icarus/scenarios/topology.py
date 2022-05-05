@@ -11,7 +11,7 @@ A valid ICN topology must have the following attributes:
    deployed directly at topology creation, instead they are deployed by a
    cache placement algorithm.
 """
-
+import math
 from os import path
 
 import networkx as nx
@@ -23,6 +23,7 @@ from icarus.registry import register_topology_factory
 
 __all__ = [
     "IcnTopology",
+    "topology_NET_A",
     "topology_tree",
     "topology_path",
     "topology_ring",
@@ -132,9 +133,10 @@ def topology_NET_A(matrix="hello", m=10, delay=1, **kwargs):
     #using mesh example for setting the routers, recivers and sources
     if m > n:
         raise ValueError("m cannot be greater than n")
-    routers = range(n)
-    receivers = range(n, 2 * n)
-    sources = range(2 * n, 2 * n + m)
+
+    routers = range(math.floor(n/3))
+    receivers = range(math.floor(n/3), math.floor((n/3)*2))
+    sources = range(math.floor((n/3)*2), n)
     topology.graph["icr_candidates"] = set(routers)
     for v in sources:
         fnss.add_stack(topology, v, "source")
@@ -150,7 +152,82 @@ def topology_NET_A(matrix="hello", m=10, delay=1, **kwargs):
         topology.adj[u][v]["type"] = "internal"
     return IcnTopology(topology)
 
+"""@register_topology_factory("SCALE_FREE")
+def topology_scale_free():
+    graph = nx.scale_free_graph(100)
+    topology = fnss.Topology(graph)"""
 
+@register_topology_factory("TEST2")
+def topology_test2():
+    topology = fnss.waxman_1_topology(n=248, alpha=0.3, beta=0.1, L=10)
+    topology = largest_connected_component_subgraph(topology)
+    print(topology)
+    print(type(topology))
+    # degree of nodes
+    deg = nx.degree(topology)
+    print(deg)
+    print(type(deg))
+    # nodes with degree = 1
+    onedeg = [v for v in topology.nodes() if deg[v] == 1]  # they are 80
+    # we select as caches nodes with highest degrees
+    # we use as min degree 6 --> 36 nodes
+    # If we changed min degrees, that would be the number of caches we would have:
+    # Min degree    N caches
+    #  2               160
+    #  3               102
+    #  4                75
+    #  5                50
+    #  6                36
+    #  7                30
+    #  8                26
+    #  9                19
+    # 10                16
+    # 11                12
+    # 12                11
+    # 13                 7
+    # 14                 3
+    # 15                 3
+    # 16                 2
+    icr_candidates = [v for v in topology.nodes() if deg[v] >= 6]  # 36 nodes
+    # Add remove caches to adapt betweenness centrality of caches
+    for i in [181, 208, 211, 220, 222, 250, 257]:
+        icr_candidates.remove(i)
+    icr_candidates.extend([232, 303, 326, 363, 378])
+    # sources are node with degree 1 whose neighbor has degree at least equal to 5
+    # we assume that sources are nodes connected to a hub
+    # they are 44
+    sources = [v for v in onedeg if deg[list(topology.adj[v].keys())[0]] > 4.5]
+    # receivers are node with degree 1 whose neighbor has degree at most equal to 4
+    # we assume that receivers are nodes not well connected to the network
+    # they are 36
+    receivers = [v for v in onedeg if deg[list(topology.adj[v].keys())[0]] < 4.5]
+    # we set router stacks because some strategies will fail if no stacks
+    # are deployed
+    routers = [v for v in topology.nodes() if v not in sources + receivers]
+
+    # set weights and delays on all links
+    fnss.set_weights_constant(topology, 1.0)
+    fnss.set_delays_constant(topology, INTERNAL_LINK_DELAY, "ms")
+
+    # deploy stacks
+    topology.graph["icr_candidates"] = set(icr_candidates)
+    for v in sources:
+        fnss.add_stack(topology, v, "source")
+    for v in receivers:
+        fnss.add_stack(topology, v, "receiver")
+    for v in routers:
+        fnss.add_stack(topology, v, "router")
+
+    # label links as internal or external
+    for u, v in topology.edges():
+        if u in sources or v in sources:
+            topology.adj[u][v]["type"] = "external"
+            # this prevents sources to be used to route traffic
+            fnss.set_weights_constant(topology, 1000.0, [(u, v)])
+            fnss.set_delays_constant(topology, EXTERNAL_LINK_DELAY, "ms", [(u, v)])
+        else:
+            topology.adj[u][v]["type"] = "internal"
+    return IcnTopology(topology)
 
 @register_topology_factory("TREE")
 def topology_tree(k, h, delay=1, **kwargs):
