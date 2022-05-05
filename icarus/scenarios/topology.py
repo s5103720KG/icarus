@@ -188,9 +188,9 @@ def topology_scale_free(**kwargs):
     # 16                 2
     icr_candidates = [v for v in topology.nodes() if deg[v] >= 6]  # 36 nodes
     # Add remove caches to adapt betweenness centrality of caches
-    for i in [181, 208, 211, 220, 222, 250, 257]:
-        icr_candidates.remove(i)
-    icr_candidates.extend([232, 303, 326, 363, 378])
+    # for i in [181, 208, 211, 220, 222, 250, 257]:
+    #     icr_candidates.remove(i)
+    # icr_candidates.extend([232, 303, 326, 363, 378])
     # sources are node with degree 1 whose neighbor has degree at least equal to 5
     # we assume that sources are nodes connected to a hub
     # they are 44
