@@ -12,18 +12,18 @@ import networkx as nx
 def random_get_nodes_to_remove(topology_config, n_removed_nodes):
     """Get list of nodes ro remove from topology"""
     topology_name = topology_config["name"]
-    topology = icarus.registry.TOPOLOGY_FACTORY[topology_name]()
+    topology = icarus.registry.TOPOLOGY_FACTORY[topology_name](**topology_config)
     cache_nodes = topology.graph["icr_candidates"]
 
     # Remove random nodes. You can replace this line with more sophisticated
     # logic, like removing nodes based on their centrality etc...
-    nodes_to_remove = random.sample(sorted(cache_nodes), n_removed_nodes)
+    nodes_to_remove = random.sample(list(cache_nodes), n_removed_nodes)
 
     return nodes_to_remove
 
-def centraility_get_nodes_to_remove(topology_config, n_removed_nodes ):
+def centrality_get_nodes_to_remove(topology_config, n_removed_nodes):
     topology_name = topology_config["name"]
-    topology = icarus.registry.TOPOLOGY_FACTORY[topology_name]()
+    topology = icarus.registry.TOPOLOGY_FACTORY[topology_name](**topology_config)
     cache_nodes = topology.graph["icr_candidates"]
 
     # finds the betweenness centrality of each node and adds the availble nodes
@@ -46,13 +46,12 @@ def centraility_get_nodes_to_remove(topology_config, n_removed_nodes ):
 def get_links_to_remove(topology_config, n_removed_links):
     """Get list of nodes ro remove from topology"""
     topology_name = topology_config["name"]
-    topology = icarus.registry.TOPOLOGY_FACTORY[topology_name]()
+    topology = icarus.registry.TOPOLOGY_FACTORY[topology_name](**topology_config)
     links = topology.edges()
 
     # Remove random links. You can replace this line with more sophisticated
     # logic, like removing nodes based on their centrality etc...
-    links_to_remove = random.sample(sorted(links), n_removed_links)
-
+    links_to_remove = random.sample(list(links), n_removed_links)
     return links_to_remove
 
 
@@ -155,7 +154,7 @@ default["content_placement"]["name"] = "UNIFORM"
 
 # Cache replacement policy used by the network caches.
 # Supported policies are: 'LRU', 'LFU', 'FIFO', 'RAND' and 'NULL'
-# Cache policy implmentations are located in ./icarus/models/cache.py
+# Cache policy implementations are located in ./icarus/models/cache.py
 CACHE_POLICY = "LRU"
 
 # Set cache replacement policy
@@ -163,7 +162,7 @@ default["cache_policy"]["name"] = CACHE_POLICY
 
 default["desc"] = "testing"
 
-default["topology"]["removed_nodes"] = centraility_get_nodes_to_remove(default["topology"], 3)
+default["topology"]["removed_nodes"] = centrality_get_nodes_to_remove(default["topology"], 3)
 
 default["topology"]["removed_links"] = get_links_to_remove(default["topology"], 3)
 
