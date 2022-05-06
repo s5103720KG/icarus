@@ -154,7 +154,7 @@ def topology_NET_A(matrix="hello", m=10, delay=1, **kwargs):
 
 @register_topology_factory("SCALE_FREE")
 def topology_scale_free(**kwargs):
-    graph = nx.scale_free_graph(248)
+    graph = nx.scale_free_graph(248, seed=1)
     topology = fnss.Topology(graph)
     topology = largest_connected_component_subgraph(topology)
     # print(topology)
