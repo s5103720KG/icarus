@@ -165,8 +165,6 @@ def topology_scale_free(**kwargs):
     # print(type(deg))
     # nodes with degree = 1
     onedeg = [v for v in topology.nodes() if deg[v] == 1]  # they are 80
-    print("one deg")
-    print(onedeg)
     # we select as caches nodes with highest degrees
     # we use as min degree 6 --> 36 nodes
     # If we changed min degrees, that would be the number of caches we would have:
@@ -229,7 +227,7 @@ def topology_scale_free(**kwargs):
 
 @register_topology_factory("RANDOM")
 def topology_random(**kwargs):
-    topology = fnss.waxman_1_topology(n=248, alpha=0.3, beta=0.1, L=10)
+    topology = fnss.waxman_1_topology(n=248, alpha=0.2, beta=0.1, L=10)
     topology = largest_connected_component_subgraph(topology)
     #print(topology)
     #print(type(topology))
@@ -239,8 +237,6 @@ def topology_random(**kwargs):
     #print(type(deg))
     # nodes with degree = 1
     onedeg = [v for v in topology.nodes() if deg[v] == 1]  # they are 80
-    print("one deg")
-    print(onedeg)
     # we select as caches nodes with highest degrees
     # we use as min degree 6 --> 36 nodes
     # If we changed min degrees, that would be the number of caches we would have:
@@ -262,9 +258,9 @@ def topology_random(**kwargs):
     # 16                 2
     icr_candidates = [v for v in topology.nodes() if deg[v] >= 6]  # 36 nodes
     # Add remove caches to adapt betweenness centrality of caches
-    for i in [181, 208, 211, 220, 222, 250, 257]:
-        icr_candidates.remove(i)
-    icr_candidates.extend([232, 303, 326, 363, 378])
+    #for i in [181, 208, 211, 220, 222, 250, 257]:
+    #    icr_candidates.remove(i)
+    #icr_candidates.extend([232, 303, 326, 363, 378])
     # sources are node with degree 1 whose neighbor has degree at least equal to 5
     # we assume that sources are nodes connected to a hub
     # they are 44

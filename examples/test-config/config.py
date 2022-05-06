@@ -14,10 +14,15 @@ def random_get_nodes_to_remove(topology_config, n_removed_nodes):
     topology_name = topology_config["name"]
     topology = icarus.registry.TOPOLOGY_FACTORY[topology_name](**topology_config)
     cache_nodes = topology.graph["icr_candidates"]
+    print("cache nodes")
+    print(len(cache_nodes))
+    print(cache_nodes)
 
     # Remove random nodes. You can replace this line with more sophisticated
     # logic, like removing nodes based on their centrality etc...
     nodes_to_remove = random.sample(list(cache_nodes), n_removed_nodes)
+    print("nodes removed")
+    print(nodes_to_remove)
 
     return nodes_to_remove
 
@@ -26,6 +31,7 @@ def centrality_get_nodes_to_remove(topology_config, n_removed_nodes):
     topology = icarus.registry.TOPOLOGY_FACTORY[topology_name](**topology_config)
     cache_nodes = topology.graph["icr_candidates"]
     print("cache nodes")
+    print(len(cache_nodes))
     print(cache_nodes)
 
     # finds the betweenness centrality of each node and adds the availble nodes
@@ -41,6 +47,7 @@ def centrality_get_nodes_to_remove(topology_config, n_removed_nodes):
         nodes.append(tmp)
         available_nodes.pop(nodes[x])
 
+    print("nodes removed")
     print(nodes)
     nodes_to_remove = nodes
     return nodes_to_remove
@@ -82,7 +89,7 @@ RESULTS_FORMAT = "PICKLE"
 
 # Number of times each experiment is replicated
 # This is necessary for extracting confidence interval of selected metrics
-N_REPLICATIONS = 0
+N_REPLICATIONS = 1
 
 # List of metrics to be measured in the experiments
 # The implementation of data collectors are located in ./icarus/execution/collectors.py
@@ -166,9 +173,11 @@ default["cache_policy"]["name"] = CACHE_POLICY
 
 default["desc"] = "testing"
 
-default["topology"]["removed_nodes"] = centrality_get_nodes_to_remove(default["topology"], 3)
+#default["topology"]["removed_nodes"] = centrality_get_nodes_to_remove(default["topology"], 10)
 
-default["topology"]["removed_links"] = get_links_to_remove(default["topology"], 3)
+default["topology"]["removed_nodes"] = random_get_nodes_to_remove(default["topology"], 3)
+
+#default["topology"]["removed_links"] = get_links_to_remove(default["topology"], 3)
 
 for strategy in STRATEGIES:
     experiment = copy.deepcopy(default)
