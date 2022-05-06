@@ -361,7 +361,7 @@ class LatencyCollector(DataCollector):
 
     @inheritdoc(DataCollector)
     def results(self):
-        results = Tree({"MEAN": self.latency / self.sess_count})
+        results = Tree({"MEAN": self.latency / self.sess_count if self.sess_count > 0 else 0})
         if self.cdf:
             results["CDF"] = cdf(self.latency_data)
         return results
@@ -388,7 +388,7 @@ class SuccessCollector(DataCollector):
 
     @inheritdoc(DataCollector)
     def results(self):
-        return Tree(**{"SUCCESS_RATE": self.successes / self.sessions})
+        return Tree(**{"SUCCESS_RATE": self.successes / self.sessions if self.sessions > 0 else 0})
 
 @register_data_collector("CACHE_HIT_RATIO")
 class CacheHitRatioCollector(DataCollector):
@@ -457,7 +457,7 @@ class CacheHitRatioCollector(DataCollector):
     @inheritdoc(DataCollector)
     def results(self):
         n_sess = self.cache_hits + self.serv_hits
-        hit_ratio = self.cache_hits / n_sess
+        hit_ratio = self.cache_hits / n_sess if n_sess > 0 else 0
         results = Tree(**{"MEAN": hit_ratio})
         if self.off_path_hits:
             results["MEAN_OFF_PATH"] = self.off_path_hit_count / n_sess
