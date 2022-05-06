@@ -227,7 +227,7 @@ def topology_scale_free(**kwargs):
 
 @register_topology_factory("RANDOM")
 def topology_random(**kwargs):
-    topology = fnss.waxman_1_topology(n=248, alpha=0.2, beta=0.1, L=10)
+    topology = fnss.waxman_1_topology(n=248, alpha=0.2, beta=0.1, L=10, seed = 1)
     topology = largest_connected_component_subgraph(topology)
     #print(topology)
     #print(type(topology))
