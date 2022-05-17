@@ -88,7 +88,7 @@ RESULTS_FORMAT = "PICKLE"
 
 # Number of times each experiment is replicated
 # This is necessary for extracting confidence interval of selected metrics
-N_REPLICATIONS = 1
+N_REPLICATIONS = 3
 
 # List of metrics to be measured in the experiments
 # The implementation of data collectors are located in ./icarus/execution/collectors.py
@@ -115,7 +115,12 @@ NETWORK_REQUEST_RATE = 100
 # The code is located in ./icarus/models/strategy.py
 STRATEGIES = [
     "LCE",  # Leave Copy Everywhere
-    "NO_CACHE",  # No caching, shorest-path routing
+    "HR_SYMM",  # Symmetric hash-routing
+    "PROB_CACHE",  # ProbCache
+]
+"""
+STRATEGIES = [
+    "LCE",  # Leave Copy Everywhere
     "HR_SYMM",  # Symmetric hash-routing
     "HR_ASYMM",  # Asymmetric hash-routing
     "HR_MULTICAST",  # Multicast hash-routing
@@ -123,8 +128,12 @@ STRATEGIES = [
     "PROB_CACHE",  # ProbCache
     "LCD",  # Leave Copy Down
     "RAND_CHOICE",  # Random choice: cache in one random cache on path
-    "RAND_BERNOULLI",  # Random Bernoulli: cache randomly in caches on path
 ]
+"""
+
+PERCENT_REMOVED = [0, 10, 20, 30, 40, 50, 60]
+FAILURE_TYPE = ["RANDOM"]
+#FAILURE_TYPE = ["RANDOM", "BETWEENNESS", "LINK"]
 
 # Queue of experiments
 EXPERIMENT_QUEUE = deque()
@@ -134,10 +143,15 @@ default = Tree()
 
 # Specify topology
 TOPOLOGIES = [
+    "TISCALI_2",
+]
+"""
+TOPOLOGIES = [
     "RANDOM",
     "TISCALI_2",
     "SCALE_FREE",
 ]
+"""
 
 #default["topology"]["name"] = TOPOLOGIES
 
@@ -166,10 +180,6 @@ CACHE_POLICY = "LRU"
 # Set cache replacement policy
 default["cache_policy"]["name"] = CACHE_POLICY
 
-#default["topology"]["removed_links"] = get_links_to_remove(default["topology"], 3)
-PERCENT_REMOVED = [10, 20, 30, 40, 50, 60]
-FAILURE_TYPE = ["RANDOM", "BETWEENNESS", "LINK"]
-
 for topology in TOPOLOGIES:
     for strategy in STRATEGIES:
         for percent_removed in PERCENT_REMOVED:
@@ -178,12 +188,15 @@ for topology in TOPOLOGIES:
                 experiment = copy.deepcopy(default)
                 experiment["topology"]["name"] = topology
                 experiment["strategy"]["name"] = strategy
-                if failure_type == "RANDOM":
-                    experiment["topology"]["removed_nodes"] = random_get_nodes_to_remove(experiment["topology"], percent_removed)
-                elif failure_type == "LINK":
-                    experiment["topology"]["removed_links"] = get_links_to_remove(experiment["topology"], percent_removed)
-                else:
-                    experiment["topology"]["removed_nodes"] = centrality_get_nodes_to_remove(experiment["topology"], percent_removed)
+                experiment["workload"]["failure_type"] = failure_type
+                experiment["workload"]["percent_removed"] = percent_removed
+                if PERCENT_REMOVED != 0:
+                    if failure_type == "RANDOM":
+                        experiment["topology"]["removed_nodes"] = random_get_nodes_to_remove(experiment["topology"], percent_removed)
+                    elif failure_type == "LINK":
+                        experiment["topology"]["removed_links"] = get_links_to_remove(experiment["topology"], percent_removed)
+                    elif failure_type == "BETWEENNESS":
+                        experiment["topology"]["removed_nodes"] = centrality_get_nodes_to_remove(experiment["topology"], percent_removed)
                 experiment["desc"] = "Topology: {}, Strategy: {}, Failure Type: {}, Percent removed: {}%".format(
                     topology,
                     strategy,
