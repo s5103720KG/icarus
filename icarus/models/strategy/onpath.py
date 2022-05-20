@@ -130,14 +130,16 @@ class LeaveCopyEverywhere(Strategy):
 
     @inheritdoc(Strategy)
     def process_event(self, time, receiver, content, log):
+        # Route requests to original source and queries caches on the path
+        self.controller.start_session(time, receiver, content, log)
+
         # get all required data
         source = self.view.content_source(content)
         try:
             path = self.view.shortest_path(receiver, source)
         except Exception:
             return
-        # Route requests to original source and queries caches on the path
-        self.controller.start_session(time, receiver, content, log)
+
         for u, v in path_links(path):
             self.controller.forward_request_hop(u, v)
             if self.view.has_cache(v):
@@ -178,14 +180,16 @@ class LeaveCopyDown(Strategy):
 
     @inheritdoc(Strategy)
     def process_event(self, time, receiver, content, log):
+        # Route requests to original source and queries caches on the path
+        self.controller.start_session(time, receiver, content, log)
+
         # get all required data
         source = self.view.content_source(content)
         try:
             path = self.view.shortest_path(receiver, source)
         except Exception:
             return
-        # Route requests to original source and queries caches on the path
-        self.controller.start_session(time, receiver, content, log)
+
         for u, v in path_links(path):
             self.controller.forward_request_hop(u, v)
             if self.view.has_cache(v):
@@ -241,14 +245,16 @@ class ProbCache(Strategy):
 
     @inheritdoc(Strategy)
     def process_event(self, time, receiver, content, log):
+        # Route requests to original source and queries caches on the path
+        self.controller.start_session(time, receiver, content, log)
+
         # get all required data
         source = self.view.content_source(content)
         try:
             path = self.view.shortest_path(receiver, source)
         except Exception:
             return
-        # Route requests to original source and queries caches on the path
-        self.controller.start_session(time, receiver, content, log)
+
         for hop in range(1, len(path)):
             u = path[hop - 1]
             v = path[hop]
@@ -314,14 +320,16 @@ class CacheLessForMore(Strategy):
 
     @inheritdoc(Strategy)
     def process_event(self, time, receiver, content, log):
+        # Route requests to original source and queries caches on the path
+        self.controller.start_session(time, receiver, content, log)
+
         # get all required data
         source = self.view.content_source(content)
         try:
             path = self.view.shortest_path(receiver, source)
         except Exception:
             return
-        # Route requests to original source and queries caches on the path
-        self.controller.start_session(time, receiver, content, log)
+
         for u, v in path_links(path):
             self.controller.forward_request_hop(u, v)
             if self.view.has_cache(v):
@@ -367,14 +375,16 @@ class RandomBernoulli(Strategy):
 
     @inheritdoc(Strategy)
     def process_event(self, time, receiver, content, log):
+         # Route requests to original source and queries caches on the path
+        self.controller.start_session(time, receiver, content, log)
+
         # get all required data
         source = self.view.content_source(content)
         try:
             path = self.view.shortest_path(receiver, source)
         except Exception:
             return
-        # Route requests to original source and queries caches on the path
-        self.controller.start_session(time, receiver, content, log)
+
         for u, v in path_links(path):
             self.controller.forward_request_hop(u, v)
             if self.view.has_cache(v):
@@ -409,14 +419,16 @@ class RandomChoice(Strategy):
 
     @inheritdoc(Strategy)
     def process_event(self, time, receiver, content, log):
+        # Route requests to original source and queries caches on the path
+        self.controller.start_session(time, receiver, content, log)
+
         # get all required data
         source = self.view.content_source(content)
         try:
             path = self.view.shortest_path(receiver, source)
         except Exception:
             return
-        # Route requests to original source and queries caches on the path
-        self.controller.start_session(time, receiver, content, log)
+
         for u, v in path_links(path):
             self.controller.forward_request_hop(u, v)
             if self.view.has_cache(v):
