@@ -458,7 +458,12 @@ class CacheHitRatioCollector(DataCollector):
     def results(self):
         n_sess = self.cache_hits + self.serv_hits
         hit_ratio = self.cache_hits / n_sess if n_sess > 0 else 0
-        results = Tree(**{"MEAN": hit_ratio})
+        failure_adjusted_hit_ratio = self.cache_hits / self.sess_count if self.sess_count > 0 else 0
+        results = Tree(**{
+            "MEAN": hit_ratio,
+            "MEAN_FAILURE_ADJUSTED": failure_adjusted_hit_ratio,
+            })
+
         if self.off_path_hits:
             results["MEAN_OFF_PATH"] = self.off_path_hit_count / n_sess
             results["MEAN_ON_PATH"] = results["MEAN"] - results["MEAN_OFF_PATH"]
