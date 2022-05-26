@@ -157,12 +157,8 @@ def topology_scale_free(**kwargs):
     graph = nx.scale_free_graph(248, seed=1)
     topology = fnss.Topology(graph)
     topology = largest_connected_component_subgraph(topology)
-    # print(topology)
-    # print(type(topology))
     # degree of nodes
     deg = nx.degree(topology)
-    # print(deg)
-    # print(type(deg))
     # nodes with degree = 1
     onedeg = [v for v in topology.nodes() if deg[v] == 1]  # they are 80
     # we select as caches nodes with highest degrees
@@ -229,45 +225,17 @@ def topology_scale_free(**kwargs):
 def topology_random(**kwargs):
     topology = fnss.waxman_1_topology(n=248, alpha=0.2, beta=0.1, L=10, seed = 1)
     topology = largest_connected_component_subgraph(topology)
-    #print(topology)
-    #print(type(topology))
     # degree of nodes
     deg = nx.degree(topology)
-    #print(deg)
-    #print(type(deg))
     # nodes with degree = 1
-    onedeg = [v for v in topology.nodes() if deg[v] == 1]  # they are 80
+    onedeg = [v for v in topology.nodes() if deg[v] == 1]
     # we select as caches nodes with highest degrees
-    # we use as min degree 6 --> 36 nodes
-    # If we changed min degrees, that would be the number of caches we would have:
-    # Min degree    N caches
-    #  2               160
-    #  3               102
-    #  4                75
-    #  5                50
-    #  6                36
-    #  7                30
-    #  8                26
-    #  9                19
-    # 10                16
-    # 11                12
-    # 12                11
-    # 13                 7
-    # 14                 3
-    # 15                 3
-    # 16                 2
-    icr_candidates = [v for v in topology.nodes() if deg[v] >= 6]  # 36 nodes
-    # Add remove caches to adapt betweenness centrality of caches
-    #for i in [181, 208, 211, 220, 222, 250, 257]:
-    #    icr_candidates.remove(i)
-    #icr_candidates.extend([232, 303, 326, 363, 378])
+    icr_candidates = [v for v in topology.nodes() if deg[v] >= 6]
     # sources are node with degree 1 whose neighbor has degree at least equal to 5
     # we assume that sources are nodes connected to a hub
-    # they are 44
     sources = [v for v in onedeg if deg[list(topology.adj[v].keys())[0]] > 4.5]
     # receivers are node with degree 1 whose neighbor has degree at most equal to 4
     # we assume that receivers are nodes not well connected to the network
-    # they are 36
     receivers = [v for v in onedeg if deg[list(topology.adj[v].keys())[0]] < 4.5]
     # we set router stacks because some strategies will fail if no stacks
     # are deployed

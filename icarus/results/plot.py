@@ -471,7 +471,7 @@ def plot_bar_chart(resultset, desc, filename, plotdir):
         if "legend_loc" in desc:
             legend_args["loc"] = desc["legend_loc"]
         plt.legend(
-            [elem[x] for x in yvals], legend, prop={"size": LEGEND_SIZE}, **legend_args
+            [elem[x] for x in yvals], legend, prop={"size": 7}, **legend_args
         )
     xmin, _ = plt.xlim()
     plt.xlim(xmin, left - separation + border)
